@@ -1,6 +1,7 @@
 package org.jbradfield.gilionaire;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +22,7 @@ public class TestController {
     public TestController() {
     }
 
-    @GetMapping("/csv")
+    @GetMapping(value = "/csv", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<?> readCSV() throws Exception {
         String link = "https://raw.githubusercontent.com/viion/ffxiv-datamining/master/csv/Item.csv";
         URL url = new URL(link);
@@ -42,7 +43,7 @@ public class TestController {
 
         InputStream stream = http.getInputStream();
         String response = getStringFromStream(stream);
-        return ResponseEntity.ok(response.length() > 10000 ? response.substring(0, 10000) : response);
+        return ResponseEntity.ok(response);
     }
 
     private static String getStringFromStream(InputStream stream) throws IOException {
